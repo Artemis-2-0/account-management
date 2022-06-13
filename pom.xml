@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.brihaspathee.artemis</groupId>
     <artifactId>account-management</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>account-management</name>
     <description>account-management</description>
     <url>http://www.brihaspathee.com</url>
@@ -31,7 +31,7 @@
         <!--        <developerConnection>scm:git:ssh://github.com:Artemis-2-0/account-management.git</developerConnection>-->
         <developerConnection>scm:git:git@github.com:Artemis-2-0/account-management.git</developerConnection>
         <url>scm:git:http://github.com/Artemis-2-0/account-management</url>
-        <tag>account-management-0.0.1</tag>
+        <tag>aaccount-management-1.0.0</tag>
     </scm>
 
     <developers>
