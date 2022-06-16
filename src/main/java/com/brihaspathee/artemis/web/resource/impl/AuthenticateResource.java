@@ -18,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -62,19 +63,10 @@ public class AuthenticateResource implements AuthenticateAPI {
                         authenticationRequest.getPassword()));
 
         final User userDetails = securityUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        final String jwt = jwtUtil.generateToken(userDetails);
-        UserDto userDto = getUserDto(userDetails);
-        AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
-                .jwtToken(jwt)
-                .userDto(userDto)
-                .build();
-        ArtemisApiResponse<AuthenticationResponse> apiResponse = ArtemisApiResponse.<AuthenticationResponse>builder()
-                .response(authenticationResponse)
-                .status(HttpStatus.OK)
-                .message("Authenticated Successfully")
-                .build();
-        return ResponseEntity.ok(apiResponse);
+        return getAuthenticationResponse(userDetails);
     }
+
+
 
     /**
      * Authenticates the username and password
@@ -83,15 +75,43 @@ public class AuthenticateResource implements AuthenticateAPI {
      */
     @Override
     public ResponseEntity<ArtemisApiResponse<AuthenticationResponse>> authenticate(@AuthenticationPrincipal User user){
-        final String jwt = jwtUtil.generateToken(user);
-        UserDto userDto = getUserDto(user);
+        return getAuthenticationResponse(user);
+//        final String jwt = jwtUtil.generateToken(user);
+//        UserDto userDto = getUserDto(user);
+//        AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
+//                .authToken(jwt)
+//                .subject(userDto)
+//                .isAuthenticated(true)
+//                .authMessage("Authentication Successful")
+//                .build();
+//        ArtemisApiResponse<AuthenticationResponse> apiResponse = ArtemisApiResponse.<AuthenticationResponse>builder()
+//                .response(authenticationResponse)
+//                .status(HttpStatus.OK)
+//                .statusCode(200)
+//                .message("Authenticated Successfully")
+//                .build();
+//        return ResponseEntity.ok(apiResponse);
+    }
+
+    /**
+     * Creates the authentication response after successful authentication of the user
+     * @param userDetails
+     * @return
+     */
+    private ResponseEntity<ArtemisApiResponse<AuthenticationResponse>> getAuthenticationResponse(User userDetails) {
+        final String jwt = jwtUtil.generateToken(userDetails);
+        UserDto userDto = getUserDto(userDetails);
         AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
-                .jwtToken(jwt)
-                .userDto(userDto)
+                .authToken(jwt)
+                .subject(userDto)
+                .isAuthenticated(true)
+                .authMessage("Authentication Successful")
                 .build();
         ArtemisApiResponse<AuthenticationResponse> apiResponse = ArtemisApiResponse.<AuthenticationResponse>builder()
+                .timestamp(LocalDateTime.now())
                 .response(authenticationResponse)
                 .status(HttpStatus.OK)
+                .statusCode(200)
                 .message("Authenticated Successfully")
                 .build();
         return ResponseEntity.ok(apiResponse);

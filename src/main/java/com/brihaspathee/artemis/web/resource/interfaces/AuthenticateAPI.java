@@ -4,6 +4,12 @@ import com.brihaspathee.artemis.domain.security.User;
 import com.brihaspathee.artemis.web.model.AuthenticationRequest;
 import com.brihaspathee.artemis.web.model.AuthenticationResponse;
 import com.brihaspathee.artemis.web.response.ArtemisApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -25,9 +31,52 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Validated
 public interface AuthenticateAPI {
 
+    /**
+     * Authenticate the user
+     * The login credentials are passed in the body of the request
+     * @param authenticationRequest
+     * @return
+     */
+    @Operation(
+            method = "POST",
+            description = "Authenticate the user",
+            tags = {"authentication"}
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successfully authenticate the user",
+                            content = {
+                                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ArtemisApiResponse.class))
+                            }
+                    )
+            }
+    )
     @PostMapping("/authenticate")
     ResponseEntity<ArtemisApiResponse<AuthenticationResponse>> authenticate(@RequestBody AuthenticationRequest authenticationRequest);
 
+    /**
+     * Authenticate the user
+     * @param user
+     * @return
+     */
+    @Operation(
+            method = "GET",
+            description = "Authenticate the user",
+            tags = {"authentication"}
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successfully authenticate the user",
+                            content = {
+                                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ArtemisApiResponse.class))
+                            }
+                    )
+            }
+    )
     @GetMapping("/jwt-token")
     ResponseEntity<ArtemisApiResponse<AuthenticationResponse>> authenticate(@AuthenticationPrincipal User user);
 }
