@@ -57,7 +57,7 @@
         <dependency>
             <groupId>com.brihaspathee.artemis</groupId>
             <artifactId>artemis-library</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>

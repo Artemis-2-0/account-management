@@ -1,5 +1,6 @@
 package com.brihaspathee.artemis.exception;
 
+import com.brihaspathee.artemis.web.model.AuthenticationResponse;
 import com.brihaspathee.artemis.web.response.ArtemisApiResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +34,7 @@ public class ApiErrorHandler {
      * @throws JsonProcessingException
      */
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ArtemisApiResponse> handleBadCredentialsException(BadCredentialsException exception) throws JsonProcessingException {
+    public ResponseEntity<ArtemisApiResponse<AuthenticationResponse>> handleBadCredentialsException(BadCredentialsException exception) throws JsonProcessingException {
         log.info("Inside bad credentials exception handler");
         return invalidCredentials("Authentication Failed. Invalid Password");
     }
@@ -47,7 +48,7 @@ public class ApiErrorHandler {
      * @throws JsonProcessingException
      */
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ArtemisApiResponse> handleBadCredentialsException(UserNotFoundException exception) throws JsonProcessingException {
+    public ResponseEntity<ArtemisApiResponse<AuthenticationResponse>> handleBadCredentialsException(UserNotFoundException exception) throws JsonProcessingException {
         log.info("Inside User not found exception");
         return invalidCredentials("Authentication Failed. User not found");
     }
@@ -57,12 +58,16 @@ public class ApiErrorHandler {
      * @param message
      * @return
      */
-    private ResponseEntity<ArtemisApiResponse> invalidCredentials(String message) {
+    private ResponseEntity<ArtemisApiResponse<AuthenticationResponse>> invalidCredentials(String message) {
         ArtemisApiResponse apiResponse = ArtemisApiResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .message(message)
                 .status(HttpStatus.UNAUTHORIZED)
                 .statusCode(401)
+                .response(AuthenticationResponse.builder()
+                        .authMessage(message)
+                        .isAuthenticated(false)
+                        .build())
                 .build();
         return new ResponseEntity<>(apiResponse, HttpStatus.UNAUTHORIZED);
     }
