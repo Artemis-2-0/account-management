@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.brihaspathee.artemis</groupId>
     <artifactId>account-management</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>account-management</name>
     <description>account-management</description>
     <url/>
@@ -76,12 +76,6 @@
                 <configuration>
                     <source>21</source>
                     <target>21</target>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </path>
-                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>
