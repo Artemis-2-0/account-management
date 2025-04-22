@@ -2,4 +2,4 @@ spring:
   application:
     name: account-management
   config:
-    import: optional:configserver:http://localhost:6090
+    import: optional:configserver:${CONFIG_SERVER_URL}

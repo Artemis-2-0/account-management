@@ -1,14 +1,14 @@
 spring:
   application:
     name: account-management
-#  data:
-#    mongodb:
-#      username: membermanagementadmin
-#      password: password
-#      host: localhost
-#      port: 27019
-#      database: member-management
-#      authentication-database: member-management
+  neo4j:
+    uri: bolt://localhost:7688
+    authentication:
+      username: neo4j
+      password: password
+  data:
+    neo4j:
+      database: artemis.account
   cloud:
     config:
       enabled: false
